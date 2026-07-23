@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Plus+Jakarta+Sans:wght@600;700&display=swap');
+
+:root {
+  --surface: #E7EAF0;
+  --neu-light: #FFFFFF;
+  --neu-dark: #A8B0C4;
+  --glass-bg: rgba(255,255,255,0.55);
+  --glass-border: rgba(255,255,255,0.6);
+  --accent: #6D5DF6;
+  --text-primary: #232634;
+  --text-secondary: #5B6072;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+  background-color: transparent; /* Wrapper handles bg */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ambient Background Wrapper */
+.ambient-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  background-color: #F0F2F5; /* Base fallback */
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+}
+
+.blob-linkedin {
+  background-color: #0A66C2;
+  width: 60vw;
+  height: 60vh;
+  top: -10vh;
+  left: -10vw;
+}
+
+.blob-twitter {
+  background-color: #1DA1F2;
+  width: 50vw;
+  height: 50vh;
+  top: 10vh;
+  right: -5vw;
+}
+
+.blob-instagram {
+  background: linear-gradient(135deg, #F58529, #DD2A7B, #8134AF);
+  width: 55vw;
+  height: 55vh;
+  bottom: -15vh;
+  right: 10vw;
+}
+
+.blob-devto {
+  background-color: #0A0A0A;
+  width: 40vw;
+  height: 40vh;
+  bottom: 5vh;
+  left: -5vw;
+}
+
+/* Base focus style */
+:focus-visible {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 2px !important;
+}
+
+/* Utility classes for animations */
+.neumorphic-inset {
+  box-shadow: inset 6px 6px 12px var(--neu-dark), inset -6px -6px 12px var(--neu-light) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
