@@ -11,33 +11,33 @@ const glassRecipe = {
 
 // Small controls (icon buttons)
 const smallRaised = {
-  boxShadow: '6px 6px 12px var(--neu-dark), -6px -6px 12px var(--neu-light)',
+  boxShadow: '3px 3px 6px var(--neu-dark), -3px -3px 6px var(--neu-light)',
   backgroundColor: 'var(--surface)',
 };
 const smallHover = {
-  boxShadow: '8px 8px 16px var(--neu-dark), -8px -8px 16px var(--neu-light)',
+  boxShadow: '4px 4px 8px var(--neu-dark), -4px -4px 8px var(--neu-light)',
 };
 const smallInset = {
-  boxShadow: 'inset 4px 4px 8px var(--neu-dark), inset -4px -4px 8px var(--neu-light)',
+  boxShadow: 'inset 2px 2px 4px var(--neu-dark), inset -2px -2px 4px var(--neu-light)',
   backgroundColor: 'var(--surface)',
 };
 
 // Medium controls (chips, text inputs, selects)
 const mediumRaised = {
-  boxShadow: '4px 4px 10px var(--neu-dark), -4px -4px 10px var(--neu-light)',
+  boxShadow: '4px 4px 8px var(--neu-dark), -4px -4px 8px var(--neu-light)',
   backgroundColor: 'var(--surface)',
 };
 const mediumInset = {
-  boxShadow: 'inset 3px 3px 6px var(--neu-dark), inset -3px -3px 6px var(--neu-light)',
+  boxShadow: 'inset 2px 2px 5px var(--neu-dark), inset -2px -2px 5px var(--neu-light)',
   backgroundColor: 'var(--surface)',
 };
 
 // Large controls (Publish button)
 const largeRaised = {
-  boxShadow: '8px 8px 18px var(--neu-dark), -8px -8px 18px var(--neu-light)',
+  boxShadow: '6px 6px 12px var(--neu-dark), -6px -6px 12px var(--neu-light)',
 };
 const largeInset = {
-  boxShadow: 'inset 5px 5px 10px var(--neu-dark), inset -5px -5px 10px var(--neu-light)',
+  boxShadow: 'inset 4px 4px 8px var(--neu-dark), inset -4px -4px 8px var(--neu-light)',
 };
 
 const theme = createTheme({
