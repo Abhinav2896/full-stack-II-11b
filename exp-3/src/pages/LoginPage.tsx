@@ -1,5 +1,5 @@
 import { useState, useEffect, type FormEvent } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 interface LocationState {
@@ -154,14 +154,7 @@ export const LoginPage = () => {
           </button>
         </form>
 
-        <div className="text-center pt-2">
-          <Link
-            to="/"
-            className="text-xs text-slate-500 hover:text-indigo-600 transition-colors"
-          >
-            ← Back to Home
-          </Link>
-        </div>
+
       </div>
     </div>
   );
