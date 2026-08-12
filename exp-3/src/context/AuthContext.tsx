@@ -82,16 +82,15 @@ const credentialsToUser = (credentials: LoginCredentials): User => {
   const username = credentials.username.trim();
   const id = `usr_${btoa(username).replace(/[^a-zA-Z0-9]/g, '').slice(0, 8).toLowerCase()}`;
   const role: 'admin' | 'user' = username.toLowerCase() === 'admin' ? 'admin' : 'user';
-  const displayName = username
-    .split(/[._-]/)
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ') || username;
   return {
     id,
     username,
-    email: `${username.toLowerCase()}@jwt-demo.local`,
+    email: credentials.email?.trim() || `${username.toLowerCase()}@jwt-demo.local`,
     role,
-    name: displayName,
+    name: credentials.name?.trim() || username
+      .split(/[._-]/)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ') || username,
   };
 };
 

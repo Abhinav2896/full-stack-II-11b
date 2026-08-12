@@ -9,9 +9,14 @@ interface LocationState {
 interface FormErrors {
   username?: string;
   password?: string;
+  name?: string;
+  email?: string;
 }
 
 export const LoginPage = () => {
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
@@ -39,6 +44,21 @@ export const LoginPage = () => {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
+    if (isSignUp) {
+      if (!name.trim()) {
+        newErrors.name = 'Full Name is required';
+      } else if (name.trim().length < 3) {
+        newErrors.name = 'Full Name must be at least 3 characters';
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email.trim()) {
+        newErrors.email = 'Email address is required';
+      } else if (!emailRegex.test(email)) {
+        newErrors.email = 'Please enter a valid email address';
+      }
+    }
+
     if (!username.trim()) {
       newErrors.username = 'Username is required';
     } else if (username.trim().length < 3) {
@@ -63,16 +83,35 @@ export const LoginPage = () => {
       return;
     }
 
-    await login({ username: username.trim(), password }, rememberMe);
+    if (isSignUp) {
+      await login({
+        username: username.trim(),
+        password,
+        name: name.trim(),
+        email: email.trim(),
+      }, rememberMe);
+    } else {
+      await login({ username: username.trim(), password }, rememberMe);
+    }
+  };
+
+  const handleToggleMode = () => {
+    setIsSignUp((prev) => !prev);
+    setErrors({});
+    clearError();
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
       <div className="max-w-md w-full bg-white shadow-sm border border-slate-200 rounded-lg p-8 space-y-6">
         <div className="text-center">
-          <h1 className="text-xl font-bold text-slate-900">Sign In</h1>
+          <h1 className="text-xl font-bold text-slate-900">
+            {isSignUp ? 'Sign Up' : 'Sign In'}
+          </h1>
           <p className="text-slate-500 text-xs mt-1">
-            Validate credentials and generate a simulated JWT
+            {isSignUp
+              ? 'Register custom claims and generate your simulated JWT'
+              : 'Validate credentials and generate a simulated JWT'}
           </p>
         </div>
 
@@ -83,6 +122,56 @@ export const LoginPage = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+          {isSignUp && (
+            <>
+              <div>
+                <label htmlFor="name" className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+                  Full Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    if (errors.name) setErrors({ ...errors, name: undefined });
+                  }}
+                  placeholder="John Doe"
+                  className={`w-full px-3 py-2 border rounded-md text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    errors.name ? 'border-red-300' : 'border-slate-300'
+                  }`}
+                  disabled={isLoading}
+                />
+                {errors.name && (
+                  <p className="text-xs text-red-600 mt-1">{errors.name}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+                  Email Address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (errors.email) setErrors({ ...errors, email: undefined });
+                  }}
+                  placeholder="john@example.com"
+                  className={`w-full px-3 py-2 border rounded-md text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    errors.email ? 'border-red-300' : 'border-slate-300'
+                  }`}
+                  disabled={isLoading}
+                />
+                {errors.email && (
+                  <p className="text-xs text-red-600 mt-1">{errors.email}</p>
+                )}
+              </div>
+            </>
+          )}
+
           <div>
             <label htmlFor="username" className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
               Username
@@ -96,7 +185,7 @@ export const LoginPage = () => {
                 setUsername(e.target.value);
                 if (errors.username) setErrors({ ...errors, username: undefined });
               }}
-              placeholder="Min 3 characters (e.g. admin)"
+              placeholder="Min 3 characters"
               className={`w-full px-3 py-2 border rounded-md text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 ${
                 errors.username ? 'border-red-300' : 'border-slate-300'
               }`}
@@ -150,13 +239,22 @@ export const LoginPage = () => {
             disabled={isLoading}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 rounded-md transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Processing...' : 'Sign In'}
+            {isLoading ? 'Processing...' : isSignUp ? 'Sign Up' : 'Sign In'}
           </button>
         </form>
 
-
+        <div className="text-center pt-2">
+          <button
+            type="button"
+            onClick={handleToggleMode}
+            className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold transition-colors"
+          >
+            {isSignUp
+              ? 'Already have an account? Sign In'
+              : "Don't have an account? Sign Up"}
+          </button>
+        </div>
       </div>
     </div>
   );
 };
-

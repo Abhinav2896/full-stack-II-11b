@@ -9,6 +9,8 @@ export interface User {
 export interface LoginCredentials {
   username: string;
   password: string;
+  email?: string;
+  name?: string;
 }
 
 export interface AuthState {
