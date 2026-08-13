@@ -46,10 +46,10 @@
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.7);
-    border-left: 1px solid rgba(255, 255, 255, 0.7);
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
     border-radius: 1.5rem;
   }
@@ -57,9 +57,9 @@
   /* Neomorphic Input (Inset) on Glass */
   .neo-input {
     background: rgba(255, 255, 255, 0.35);
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.05), 
-                inset -5px -5px 10px rgba(255, 255, 255, 0.8);
+                inset -5px -5px 10px rgba(255, 255, 255, 0.3); /* Muted white shade */
     border-radius: 0.75rem;
     transition: all 0.3s ease;
     color: #1e293b; /* Slate 800 */
@@ -71,7 +71,7 @@
     outline: none;
     background: rgba(255, 255, 255, 0.45);
     box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.08), 
-                inset -6px -6px 12px rgba(255, 255, 255, 1);
+                inset -6px -6px 12px rgba(255, 255, 255, 0.4);
   }
   
   .neo-input::placeholder {
@@ -81,10 +81,10 @@
 
   /* Neomorphic Button (Outset -> Inset on active) on Glass */
   .neo-button {
-    background: rgba(255, 255, 255, 0.4);
-    border: none;
-    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08), 
-               -6px -6px 12px rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.08), 
+               -4px -4px 12px rgba(255, 255, 255, 0.3); /* Muted white shade */
     border-radius: 0.75rem;
     font-weight: 700;
     transition: all 0.2s ease;
@@ -94,14 +94,14 @@
   
   .neo-button:hover {
     color: #334155; /* Slate 700 */
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.08), 
-               -4px -4px 8px rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.08), 
+               -2px -2px 8px rgba(255, 255, 255, 0.4);
   }
   
   .neo-button:active {
     box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.08), 
-                inset -4px -4px 10px rgba(255, 255, 255, 0.9);
+                inset -4px -4px 10px rgba(255, 255, 255, 0.3);
     color: #4f46e5;
   }
   
@@ -114,10 +114,10 @@
   
   /* Pill for distinct parts */
   .neo-pill {
-    background: rgba(255, 255, 255, 0.45);
-    border: none;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.05), 
-               -4px -4px 8px rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05), 
+               -2px -2px 6px rgba(255, 255, 255, 0.3); /* Muted white shade */
     border-radius: 9999px;
   }
 }
