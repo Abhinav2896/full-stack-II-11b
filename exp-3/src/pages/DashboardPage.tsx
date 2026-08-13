@@ -114,32 +114,39 @@ export const DashboardPage = () => {
   const canDelete = user?.role === 'admin';
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <div className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm flex items-center justify-between">
+    <div className="bg-hybrid min-h-screen p-6 font-sans text-slate-800">
+      <div className="max-w-5xl mx-auto space-y-8 animate-fade-in">
+        
+        {/* Header Glass Panel */}
+        <div className="glass-panel p-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
-            <h1 className="text-xl font-bold text-slate-900">Dashboard</h1>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Logged in as <span className="font-semibold text-slate-800">{user?.name}</span> ({user?.email}) • <span className="uppercase font-bold text-indigo-600 text-[10px] bg-indigo-50 px-1.5 py-0.5 rounded">{user?.role}</span>
+            <h1 className="text-3xl font-extrabold tracking-tight text-slate-800">Dashboard</h1>
+            <p className="text-sm font-medium text-slate-600 mt-1">
+              Welcome, <span className="font-bold">{user?.name}</span> ({user?.email}) 
+              <span className="neo-pill text-[10px] uppercase font-bold text-indigo-700 px-3 py-1 ml-3 align-middle tracking-widest">
+                {user?.role}
+              </span>
             </p>
           </div>
           <button
             onClick={handleLogout}
-            className="bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 font-semibold text-xs py-2 px-4 rounded-md transition-colors"
+            className="neo-button text-red-600 text-xs uppercase tracking-widest px-6 py-2.5"
           >
             Logout
           </button>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className={`bg-white border border-slate-200 rounded-lg p-6 shadow-sm space-y-4 ${canAdd ? '' : 'hidden'}`}>
-            <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider">
+        {/* Post Management Section */}
+        <div className="grid md:grid-cols-3 gap-8">
+          
+          {/* Post Creation (Visible only to Poster role) */}
+          <div className={`glass-panel p-6 space-y-6 ${canAdd ? '' : 'hidden'}`}>
+            <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest">
               Create New Post
             </h2>
-            <hr className="border-slate-100" />
-            <form onSubmit={handleCreatePost} className="space-y-3.5">
+            <form onSubmit={handleCreatePost} className="space-y-5">
               <div>
-                <label htmlFor="new-title" className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                <label htmlFor="new-title" className="block text-[10px] font-bold text-slate-600 uppercase tracking-widest mb-2 pl-1">
                   Post Title
                 </label>
                 <input
@@ -148,12 +155,12 @@ export const DashboardPage = () => {
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="Enter title"
-                  className="w-full px-3 py-1.5 border border-slate-300 rounded text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="neo-input w-full px-4 py-2.5 text-sm text-slate-800"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="new-content" className="block text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-1">
+                <label htmlFor="new-content" className="block text-[10px] font-bold text-slate-600 uppercase tracking-widest mb-2 pl-1">
                   Post Content
                 </label>
                 <textarea
@@ -161,55 +168,55 @@ export const DashboardPage = () => {
                   value={newContent}
                   onChange={(e) => setNewContent(e.target.value)}
                   placeholder="Enter content description"
-                  rows={3}
-                  className="w-full px-3 py-1.5 border border-slate-300 rounded text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
+                  rows={4}
+                  className="neo-input w-full px-4 py-2.5 text-sm text-slate-800 resize-none"
                   required
                 />
               </div>
               <button
                 type="submit"
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2 rounded transition-colors"
+                className="neo-button neo-button-primary w-full py-3 text-xs uppercase tracking-widest"
               >
-                Add Post
+                Publish Post
               </button>
             </form>
           </div>
 
-          <div className={`bg-white border border-slate-200 rounded-lg p-6 shadow-sm space-y-4 ${canAdd ? 'md:col-span-2' : 'md:col-span-3'}`}>
-            <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider">
-              Platform Posts
+          {/* Posts List */}
+          <div className={`glass-panel p-6 space-y-6 ${canAdd ? 'md:col-span-2' : 'md:col-span-3'}`}>
+            <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+              Platform Feed
             </h2>
-            <hr className="border-slate-100" />
             {posts.length === 0 ? (
-              <p className="text-xs text-slate-400 text-center py-4">No posts available</p>
+              <p className="text-sm font-medium text-slate-500 text-center py-8">No posts available</p>
             ) : (
-              <div className="space-y-4 divide-y divide-slate-100">
-                {posts.map((post, idx) => (
-                  <div key={post.id} className={`pt-4 ${idx === 0 ? '!pt-0' : ''} space-y-2`}>
+              <div className="space-y-6">
+                {posts.map((post) => (
+                  <div key={post.id} className="p-5 bg-white/20 rounded-2xl border border-white/30 shadow-sm space-y-3 transition hover:bg-white/30">
                     {editingId === post.id ? (
-                      <div className="space-y-2.5 bg-slate-50 p-3.5 rounded border border-slate-200">
+                      <div className="space-y-4">
                         <input
                           type="text"
                           value={editTitle}
                           onChange={(e) => setEditTitle(e.target.value)}
-                          className="w-full px-3 py-1.5 border border-slate-300 rounded text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                          className="neo-input w-full px-4 py-2 text-sm font-bold text-slate-800"
                         />
                         <textarea
                           value={editContent}
                           onChange={(e) => setEditContent(e.target.value)}
-                          rows={2}
-                          className="w-full px-3 py-1.5 border border-slate-300 rounded text-xs text-slate-900 focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none"
+                          rows={3}
+                          className="neo-input w-full px-4 py-2 text-sm text-slate-700 resize-none"
                         />
-                        <div className="flex gap-2 justify-end">
+                        <div className="flex gap-3 justify-end pt-1">
                           <button
                             onClick={() => handleSaveEdit(post.id)}
-                            className="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-semibold px-3 py-1 rounded"
+                            className="neo-button text-emerald-600 text-[10px] uppercase tracking-widest px-4 py-2"
                           >
                             Save
                           </button>
                           <button
                             onClick={() => setEditingId(null)}
-                            className="bg-slate-300 hover:bg-slate-400 text-slate-800 text-[10px] font-semibold px-3 py-1 rounded"
+                            className="neo-button text-slate-500 text-[10px] uppercase tracking-widest px-4 py-2"
                           >
                             Cancel
                           </button>
@@ -217,13 +224,13 @@ export const DashboardPage = () => {
                       </div>
                     ) : (
                       <>
-                        <div className="flex justify-between items-start gap-2">
-                          <h3 className="text-xs font-bold text-slate-800">{post.title}</h3>
-                          <div className="flex gap-1.5">
+                        <div className="flex justify-between items-start gap-4">
+                          <h3 className="text-lg font-bold text-slate-800 leading-tight">{post.title}</h3>
+                          <div className="flex gap-2 shrink-0">
                             {canEdit(post) && (
                               <button
                                 onClick={() => handleStartEdit(post)}
-                                className="text-[10px] font-semibold text-indigo-600 hover:text-indigo-800 hover:underline"
+                                className="neo-button text-indigo-600 text-[9px] uppercase tracking-widest px-3 py-1.5"
                               >
                                 Edit
                               </button>
@@ -231,16 +238,16 @@ export const DashboardPage = () => {
                             {canDelete && (
                               <button
                                 onClick={() => handleDeletePost(post.id)}
-                                className="text-[10px] font-semibold text-rose-600 hover:text-rose-800 hover:underline"
+                                className="neo-button text-red-600 text-[9px] uppercase tracking-widest px-3 py-1.5"
                               >
                                 Delete
                               </button>
                             )}
                           </div>
                         </div>
-                        <p className="text-xs text-slate-600 font-normal leading-relaxed">{post.content}</p>
-                        <div className="text-[9px] text-slate-400 font-medium">
-                          Author: <span className="font-semibold text-slate-500">{post.authorName}</span>
+                        <p className="text-sm font-medium text-slate-700 leading-relaxed">{post.content}</p>
+                        <div className="text-[11px] font-bold text-slate-500 tracking-wide mt-2">
+                          Author: <span className="text-slate-800">{post.authorName}</span>
                         </div>
                       </>
                     )}
@@ -251,48 +258,49 @@ export const DashboardPage = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="md:col-span-1 bg-white border border-slate-200 rounded-lg p-6 shadow-sm space-y-4">
-            <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider">
+        {/* Security / JWT Information */}
+        <div className="grid md:grid-cols-3 gap-8 pb-8">
+          
+          {/* Decoded JWT Claims */}
+          <div className="md:col-span-1 glass-panel p-6 space-y-6">
+            <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest">
               Decoded Claims
             </h2>
-            <hr className="border-slate-100" />
-            <pre className="bg-slate-50 border border-slate-100 p-3 rounded-md text-[10px] font-mono text-cyan-700 overflow-x-auto">
-              {JSON.stringify(tokenState.payload, null, 2)}
-            </pre>
+            <div className="neo-input p-4 overflow-x-auto">
+              <pre className="text-[11px] font-mono font-medium text-slate-700">
+                {JSON.stringify(tokenState.payload, null, 2)}
+              </pre>
+            </div>
           </div>
 
-          <div className="md:col-span-2 bg-white border border-slate-200 rounded-lg p-6 shadow-sm space-y-4">
-            <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider">
-              Raw Encoded JWT
+          {/* Raw Encoded JWT Token */}
+          <div className="md:col-span-2 glass-panel p-6 space-y-6">
+            <h2 className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+              Stateless Architecture Token
             </h2>
-            <hr className="border-slate-100" />
-            <div className="bg-slate-900 text-slate-200 font-mono text-[10px] p-4 rounded-md break-all leading-relaxed select-all">
+            <div className="neo-input p-5 break-all leading-loose select-all font-mono text-[11px] font-semibold text-slate-700">
               {tokenParts.length === 3 ? (
                 <>
-                  <span className="text-purple-400">{tokenParts[0]}</span>
-                  <span className="text-slate-500">.</span>
-                  <span className="text-cyan-400">{tokenParts[1]}</span>
-                  <span className="text-slate-500">.</span>
-                  <span className="text-rose-400">{tokenParts[2]}</span>
+                  <span className="text-purple-600 drop-shadow-sm">{tokenParts[0]}</span>
+                  <span className="text-slate-400 font-bold px-1">.</span>
+                  <span className="text-cyan-700 drop-shadow-sm">{tokenParts[1]}</span>
+                  <span className="text-slate-400 font-bold px-1">.</span>
+                  <span className="text-rose-600 drop-shadow-sm">{tokenParts[2]}</span>
                 </>
               ) : (
                 <span className="text-slate-400">No token active</span>
               )}
             </div>
-            <div className="grid grid-cols-3 gap-2 text-[9px] text-center font-semibold">
-              <span className="bg-purple-50 text-purple-700 border border-purple-200 py-0.5 rounded">Header</span>
-              <span className="bg-cyan-50 text-cyan-700 border border-cyan-200 py-0.5 rounded">Payload</span>
-              <span className="bg-rose-50 text-rose-700 border border-rose-200 py-0.5 rounded">Signature</span>
+            
+            {/* Legend Pill style */}
+            <div className="grid grid-cols-3 gap-4 text-[10px] text-center font-bold uppercase tracking-widest">
+              <span className="neo-pill text-purple-600 py-2">Header</span>
+              <span className="neo-pill text-cyan-700 py-2">Payload</span>
+              <span className="neo-pill text-rose-600 py-2">Signature</span>
             </div>
           </div>
         </div>
 
-        <footer className="text-center pt-4">
-          <p className="text-slate-400 text-[10px]">
-            Experiment 3 • Secure Session Management with JSON Web Tokens
-          </p>
-        </footer>
       </div>
     </div>
   );

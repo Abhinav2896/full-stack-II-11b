@@ -104,30 +104,30 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6">
-      <div className="max-w-md w-full bg-white shadow-sm border border-slate-200 rounded-lg p-8 space-y-6">
+    <div className="bg-hybrid flex items-center justify-center p-6">
+      <div className="max-w-md w-full glass-panel p-10 space-y-8 animate-fade-in">
         <div className="text-center">
-          <h1 className="text-xl font-bold text-slate-900">
-            {isSignUp ? 'Sign Up' : 'Sign In'}
+          <h1 className="text-3xl font-bold text-slate-800 tracking-tight">
+            {isSignUp ? 'Create Account' : 'Welcome Back'}
           </h1>
-          <p className="text-slate-500 text-xs mt-1">
+          <p className="text-slate-600 text-sm mt-2 font-medium">
             {isSignUp
-              ? 'Register custom claims and generate your simulated JWT'
-              : 'Validate credentials and generate a simulated JWT'}
+              ? 'Register custom claims for your JWT'
+              : 'Authenticate to access the dashboard'}
           </p>
         </div>
 
         {error && (
-          <div className="p-3 bg-red-50 border border-red-100 text-red-700 text-xs rounded-md">
+          <div className="p-3 bg-red-50/80 backdrop-blur-sm border border-red-200 text-red-700 text-xs rounded-xl shadow-sm text-center font-medium">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+        <form onSubmit={handleSubmit} className="space-y-5" noValidate>
           {isSignUp && (
             <>
               <div>
-                <label htmlFor="name" className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+                <label htmlFor="name" className="block text-[11px] font-bold text-slate-600 uppercase tracking-widest mb-2 pl-1">
                   Full Name
                 </label>
                 <input
@@ -139,18 +139,18 @@ export const LoginPage = () => {
                     if (errors.name) setErrors({ ...errors, name: undefined });
                   }}
                   placeholder="John Doe"
-                  className={`w-full px-3 py-2 border rounded-md text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 ${
-                    errors.name ? 'border-red-300' : 'border-slate-300'
+                  className={`neo-input w-full px-4 py-3 text-sm text-slate-800 ${
+                    errors.name ? 'border-red-300' : ''
                   }`}
                   disabled={isLoading}
                 />
                 {errors.name && (
-                  <p className="text-xs text-red-600 mt-1">{errors.name}</p>
+                  <p className="text-[11px] text-red-600 mt-1.5 pl-1 font-medium">{errors.name}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+                <label htmlFor="email" className="block text-[11px] font-bold text-slate-600 uppercase tracking-widest mb-2 pl-1">
                   Email Address
                 </label>
                 <input
@@ -162,25 +162,25 @@ export const LoginPage = () => {
                     if (errors.email) setErrors({ ...errors, email: undefined });
                   }}
                   placeholder="john@example.com"
-                  className={`w-full px-3 py-2 border rounded-md text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 ${
-                    errors.email ? 'border-red-300' : 'border-slate-300'
+                  className={`neo-input w-full px-4 py-3 text-sm text-slate-800 ${
+                    errors.email ? 'border-red-300' : ''
                   }`}
                   disabled={isLoading}
                 />
                 {errors.email && (
-                  <p className="text-xs text-red-600 mt-1">{errors.email}</p>
+                  <p className="text-[11px] text-red-600 mt-1.5 pl-1 font-medium">{errors.email}</p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="role" className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+                <label htmlFor="role" className="block text-[11px] font-bold text-slate-600 uppercase tracking-widest mb-2 pl-1">
                   Choose Role
                 </label>
                 <select
                   id="role"
                   value={role}
                   onChange={(e) => setRole(e.target.value as 'viewer' | 'poster')}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="neo-input w-full px-4 py-3 text-sm text-slate-800 appearance-none bg-transparent cursor-pointer"
                   disabled={isLoading}
                 >
                   <option value="viewer">Viewer (Can only view posts)</option>
@@ -191,7 +191,7 @@ export const LoginPage = () => {
           )}
 
           <div>
-            <label htmlFor="username" className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+            <label htmlFor="username" className="block text-[11px] font-bold text-slate-600 uppercase tracking-widest mb-2 pl-1">
               Username
             </label>
             <input
@@ -204,18 +204,18 @@ export const LoginPage = () => {
                 if (errors.username) setErrors({ ...errors, username: undefined });
               }}
               placeholder="Min 3 characters"
-              className={`w-full px-3 py-2 border rounded-md text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.username ? 'border-red-300' : 'border-slate-300'
+              className={`neo-input w-full px-4 py-3 text-sm text-slate-800 ${
+                errors.username ? 'border-red-300' : ''
               }`}
               disabled={isLoading}
             />
             {errors.username && (
-              <p className="text-xs text-red-600 mt-1">{errors.username}</p>
+              <p className="text-[11px] text-red-600 mt-1.5 pl-1 font-medium">{errors.username}</p>
             )}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+            <label htmlFor="password" className="block text-[11px] font-bold text-slate-600 uppercase tracking-widest mb-2 pl-1">
               Password
             </label>
             <input
@@ -228,44 +228,44 @@ export const LoginPage = () => {
                 if (errors.password) setErrors({ ...errors, password: undefined });
               }}
               placeholder="Min 6 characters"
-              className={`w-full px-3 py-2 border rounded-md text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 ${
-                errors.password ? 'border-red-300' : 'border-slate-300'
+              className={`neo-input w-full px-4 py-3 text-sm text-slate-800 ${
+                errors.password ? 'border-red-300' : ''
               }`}
               disabled={isLoading}
             />
             {errors.password && (
-              <p className="text-xs text-red-600 mt-1">{errors.password}</p>
+              <p className="text-[11px] text-red-600 mt-1.5 pl-1 font-medium">{errors.password}</p>
             )}
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center pl-1 mt-6 mb-8">
             <input
               id="remember-me"
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-4 w-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500"
+              className="w-4 h-4 text-indigo-500 rounded border-slate-300 focus:ring-indigo-500 bg-white/50 cursor-pointer"
               disabled={isLoading}
             />
-            <label htmlFor="remember-me" className="ml-2 block text-xs text-slate-600 select-none cursor-pointer">
-              Remember me (uses localStorage vs. sessionStorage)
+            <label htmlFor="remember-me" className="ml-3 block text-[11px] font-semibold text-slate-600 uppercase tracking-wider select-none cursor-pointer">
+              Remember me
             </label>
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-2.5 rounded-md transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="neo-button neo-button-primary w-full py-3.5 text-sm uppercase tracking-widest shadow-sm disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
             {isLoading ? 'Processing...' : isSignUp ? 'Sign Up' : 'Sign In'}
           </button>
         </form>
 
-        <div className="text-center pt-2">
+        <div className="text-center pt-4">
           <button
             type="button"
             onClick={handleToggleMode}
-            className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold transition-colors"
+            className="text-[11px] text-indigo-700/80 hover:text-indigo-800 font-bold uppercase tracking-widest transition-colors"
           >
             {isSignUp
               ? 'Already have an account? Sign In'

@@ -2,9 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply min-h-screen bg-slate-50 text-slate-900 antialiased;
+@layer components {
+  /* Hybrid Base Background */
+  .bg-hybrid {
+    background: linear-gradient(-45deg, #fbc2eb, #a6c1ee, #e0c3fc, #8ec5fc);
+    background-size: 400% 400%;
+    animation: gradient-x 15s ease infinite;
+    min-height: 100vh;
+  }
+
+  /* Glassmorphism Panel */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    border-radius: 1.5rem;
+  }
+
+  /* Neomorphic Input (Inset) */
+  .neo-input {
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.3), inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+  }
+  .neo-input:focus {
+    outline: none;
+    box-shadow: inset 6px 6px 10px rgba(163, 177, 198, 0.4), inset -6px -6px 10px rgba(255, 255, 255, 0.9);
+  }
+  .neo-input::placeholder {
+    color: rgba(100, 116, 139, 0.8);
+  }
+
+  /* Neomorphic Button (Outset -> Inset on active) */
+  .neo-button {
+    background: rgba(255, 255, 255, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 6px 6px 16px rgba(163, 177, 198, 0.4), -6px -6px 16px rgba(255, 255, 255, 0.8);
+    border-radius: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    color: #475569; /* slate-600 */
+  }
+  .neo-button:hover {
+    color: #334155; /* slate-700 */
+    box-shadow: 4px 4px 12px rgba(163, 177, 198, 0.4), -4px -4px 12px rgba(255, 255, 255, 0.8);
+  }
+  .neo-button:active {
+    box-shadow: inset 4px 4px 8px rgba(163, 177, 198, 0.3), inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+  }
+  .neo-button-primary {
+    color: #4f46e5; /* indigo-600 */
+  }
+  
+  /* Pill for distinct parts */
+  .neo-pill {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 3px 3px 8px rgba(163, 177, 198, 0.3), -3px -3px 8px rgba(255, 255, 255, 0.7);
+    border-radius: 9999px;
   }
 }
-
