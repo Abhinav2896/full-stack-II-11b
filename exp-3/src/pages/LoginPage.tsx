@@ -17,12 +17,13 @@ export const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState<'viewer' | 'poster'>('viewer');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(true);
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const { login, isLoading, error, clearError, isAuthenticated } = useAuth();
+  const { login, signUp, isLoading, error, clearError, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const state = location.state as LocationState | null;
@@ -51,7 +52,7 @@ export const LoginPage = () => {
         newErrors.name = 'Full Name must be at least 3 characters';
       }
 
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[^s@]+@[^s@]+\.[^s@]+$/;
       if (!email.trim()) {
         newErrors.email = 'Email address is required';
       } else if (!emailRegex.test(email)) {
@@ -84,11 +85,12 @@ export const LoginPage = () => {
     }
 
     if (isSignUp) {
-      await login({
+      await signUp({
         username: username.trim(),
         password,
         name: name.trim(),
         email: email.trim(),
+        role,
       }, rememberMe);
     } else {
       await login({ username: username.trim(), password }, rememberMe);
@@ -168,6 +170,22 @@ export const LoginPage = () => {
                 {errors.email && (
                   <p className="text-xs text-red-600 mt-1">{errors.email}</p>
                 )}
+              </div>
+
+              <div>
+                <label htmlFor="role" className="block text-xs font-semibold text-slate-700 uppercase tracking-wide mb-1.5">
+                  Choose Role
+                </label>
+                <select
+                  id="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as 'viewer' | 'poster')}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500"
+                  disabled={isLoading}
+                >
+                  <option value="viewer">Viewer (Can only view posts)</option>
+                  <option value="poster">Poster (Can add and edit own posts)</option>
+                </select>
               </div>
             </>
           )}

@@ -70,6 +70,26 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+const seedUsersDatabase = () => {
+  try {
+    const existing = localStorage.getItem('exp3_users');
+    if (!existing) {
+      const defaultUsers = [
+        {
+          username: 'admin',
+          password: 'admin123',
+          name: 'Admin User',
+          email: 'admin@jwt-demo.local',
+          role: 'admin',
+        }
+      ];
+      localStorage.setItem('exp3_users', JSON.stringify(defaultUsers));
+    }
+  } catch (e) {
+    console.error('Failed to seed users database:', e);
+  }
+};
+
 const payloadToUser = (payload: JWTPayload): User => ({
   id: payload.sub,
   username: payload.username,
@@ -78,29 +98,14 @@ const payloadToUser = (payload: JWTPayload): User => ({
   name: payload.name,
 });
 
-const credentialsToUser = (credentials: LoginCredentials): User => {
-  const username = credentials.username.trim();
-  const id = `usr_${btoa(username).replace(/[^a-zA-Z0-9]/g, '').slice(0, 8).toLowerCase()}`;
-  const role: 'admin' | 'user' = username.toLowerCase() === 'admin' ? 'admin' : 'user';
-  return {
-    id,
-    username,
-    email: credentials.email?.trim() || `${username.toLowerCase()}@jwt-demo.local`,
-    role,
-    name: credentials.name?.trim() || username
-      .split(/[._-]/)
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ') || username,
-  };
-};
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
+    seedUsersDatabase();
+
     const initAuth = async () => {
       dispatch({ type: 'AUTH_INIT' });
-
       const storedToken = retrieveToken();
 
       if (!storedToken) {
@@ -137,31 +142,128 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const username = credentials.username.trim();
       const password = credentials.password;
 
-      if (!username || username.length < 3) {
-        dispatch({
-          type: 'AUTH_FAILURE',
-          payload: 'Username must be at least 3 characters',
-        });
+      if (!username) {
+        dispatch({ type: 'AUTH_FAILURE', payload: 'Username is required' });
+        return false;
+      }
+      if (!password) {
+        dispatch({ type: 'AUTH_FAILURE', payload: 'Password is required' });
         return false;
       }
 
-      if (!password || password.length < 6) {
-        dispatch({
-          type: 'AUTH_FAILURE',
-          payload: 'Password must be at least 6 characters',
-        });
+      let dbUsers: any[] = [];
+      try {
+        const storedUsers = localStorage.getItem('exp3_users');
+        if (storedUsers) {
+          dbUsers = JSON.parse(storedUsers);
+        }
+      } catch (e) {
+        console.error('Failed to parse users database:', e);
+      }
+
+      const matchedUser = dbUsers.find(
+        (u) => u.username.toLowerCase() === username.toLowerCase()
+      );
+
+      if (!matchedUser) {
+        dispatch({ type: 'AUTH_FAILURE', payload: 'User not found. Please sign up.' });
         return false;
       }
 
-      const user = credentialsToUser(credentials);
-      const token = await generateToken(user);
+      if (matchedUser.password !== password) {
+        dispatch({ type: 'AUTH_FAILURE', payload: 'Incorrect password' });
+        return false;
+      }
 
+      const userModel: User = {
+        id: `usr_${btoa(matchedUser.username).replace(/[^a-zA-Z0-9]/g, '').slice(0, 8).toLowerCase()}`,
+        username: matchedUser.username,
+        email: matchedUser.email,
+        role: matchedUser.role,
+        name: matchedUser.name,
+      };
+
+      const token = await generateToken(userModel);
       const storageType: StorageType = rememberMe ? 'localStorage' : 'sessionStorage';
       storeToken(token, storageType);
 
       dispatch({
         type: 'AUTH_SUCCESS',
-        payload: { user, token },
+        payload: { user: userModel, token },
+      });
+
+      return true;
+    },
+    []
+  );
+
+  const signUp = useCallback(
+    async (credentials: LoginCredentials, rememberMe: boolean = true): Promise<boolean> => {
+      dispatch({ type: 'AUTH_INIT' });
+
+      const username = credentials.username.trim();
+      const password = credentials.password;
+      const name = credentials.name?.trim() || username;
+      const email = credentials.email?.trim() || `${username.toLowerCase()}@jwt-demo.local`;
+      const role = credentials.role || 'viewer';
+
+      if (!username || username.length < 3) {
+        dispatch({ type: 'AUTH_FAILURE', payload: 'Username must be at least 3 characters' });
+        return false;
+      }
+      if (!password || password.length < 6) {
+        dispatch({ type: 'AUTH_FAILURE', payload: 'Password must be at least 6 characters' });
+        return false;
+      }
+      if (username.toLowerCase() === 'admin') {
+        dispatch({ type: 'AUTH_FAILURE', payload: 'Cannot register with reserved username admin' });
+        return false;
+      }
+
+      let dbUsers: any[] = [];
+      try {
+        const storedUsers = localStorage.getItem('exp3_users');
+        if (storedUsers) {
+          dbUsers = JSON.parse(storedUsers);
+        }
+      } catch (e) {
+        console.error('Failed to parse users database:', e);
+      }
+
+      const matchedUser = dbUsers.find(
+        (u) => u.username.toLowerCase() === username.toLowerCase()
+      );
+
+      if (matchedUser) {
+        dispatch({ type: 'AUTH_FAILURE', payload: 'Username is already taken' });
+        return false;
+      }
+
+      const newDbUser = { username, password, name, email, role };
+      dbUsers.push(newDbUser);
+      try {
+        localStorage.setItem('exp3_users', JSON.stringify(dbUsers));
+      } catch (e) {
+        console.error('Failed to save user database:', e);
+        dispatch({ type: 'AUTH_FAILURE', payload: 'Failed to write user database' });
+        return false;
+      }
+
+      const userModel: User = {
+        id: `usr_${btoa(username).replace(/[^a-zA-Z0-9]/g, '').slice(0, 8).toLowerCase()}`,
+        username,
+        email,
+        role,
+        name,
+      };
+
+      const token = await generateToken(userModel);
+      const storageType: StorageType = rememberMe ? 'localStorage' : 'sessionStorage';
+      storeToken(token, storageType);
+
+      dispatch({
+        type: 'AUTH_SUCCESS',
+        payload: { user: userModel, token },
       });
 
       return true;
@@ -190,6 +292,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const value: AuthContextValue = {
     ...state,
     login,
+    signUp,
     logout,
     clearError,
     getDecodedToken,
