@@ -21,3 +21,142 @@ button {
   font: inherit;
   cursor: pointer;
 }
+
+.app {
+  min-height: 100vh;
+  padding: 32px 42px 50px;
+}
+
+.topbar {
+  max-width: 1500px;
+  margin: 0 auto 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.eyebrow {
+  color: #7d8aa5;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+h1 {
+  margin: 7px 0 5px;
+  font-size: 38px;
+  letter-spacing: -1.5px;
+}
+
+.topbar p {
+  margin: 0;
+  color: #8490a7;
+}
+
+.render-card {
+  min-width: 175px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 17px;
+  border: 1px solid #202838;
+  border-radius: 14px;
+  background: #101520;
+  box-shadow: 0 15px 40px rgba(0,0,0,.2);
+}
+
+.render-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #58d39a;
+  box-shadow: 0 0 12px #58d39a;
+}
+
+.render-card strong {
+  display: block;
+  font-size: 21px;
+}
+
+.render-card small {
+  color: #77839a;
+}
+
+.dashboard {
+  max-width: 1500px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 310px;
+  grid-template-rows: auto 1fr;
+  gap: 18px;
+}
+
+.control-panel {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 15px;
+  border: 1px solid #202838;
+  border-radius: 16px;
+  background: rgba(15, 20, 31, .9);
+}
+
+.toggle {
+  display: flex;
+  padding: 4px;
+  border-radius: 11px;
+  background: #080c13;
+}
+
+.toggle button {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 15px;
+  color: #77839a;
+  background: transparent;
+  font-weight: 700;
+}
+
+.toggle button.active {
+  color: #dff9ed;
+  background: #173528;
+}
+
+.toggle button.active.danger {
+  color: #ffe8da;
+  background: #402a20;
+}
+
+.stats {
+  display: flex;
+  gap: 8px;
+}
+
+.stats div {
+  min-width: 110px;
+  padding: 6px 13px;
+  border-left: 1px solid #273043;
+}
+
+.stats span {
+  display: block;
+  color: #77839a;
+  font-size: 11px;
+}
+
+.stats b {
+  display: block;
+  margin-top: 2px;
+  font-size: 18px;
+}
+
+.reset {
+  margin-left: auto;
+  border: 1px solid #293244;
+  border-radius: 9px;
+  padding: 9px 13px;
+  color: #aeb7c8;
+  background: #111722;
+}
