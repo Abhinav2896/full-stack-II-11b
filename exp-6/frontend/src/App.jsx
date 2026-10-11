@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -21,7 +21,7 @@ function App() {
   const fetchTasks = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_URL}•page=${page}&size=${pageSize}&sort=id,desc`);
+      const response = await fetch(`${API_URL}?page=${page}&size=${pageSize}&sort=id,desc`);
       if (!response.ok) throw new Error('Failed to fetch');
       
       const data = await response.json();
@@ -58,7 +58,7 @@ function App() {
         method: 'PUT'
       });
       const updatedTask = await response.json();
-      setTasks(tasks.map(task => (task.id === id • updatedTask : task)));
+      setTasks(tasks.map(task => (task.id === id ? updatedTask : task)));
     } catch (error) {
       console.error('Error toggling task:', error);
     }
@@ -91,7 +91,7 @@ function App() {
       <div className="glass-card">
         <header className="header">
           <h1 className="title">Student Task Manager</h1>
-          <p className="subtitle">Experiment 6: Scalable APIs & Caching</p>
+          <p className="subtitle">Experiment 6: Scalable APIs &amp; Caching</p>
         </header>
 
         <div className="stats-container">
@@ -114,7 +114,7 @@ function App() {
             <input
               type="text"
               className="task-input"
-              placeholder="What needs to be done•"
+              placeholder="What needs to be done?"
               value={newTaskTitle}
               onChange={(e) => setNewTaskTitle(e.target.value)}
             />
@@ -126,23 +126,23 @@ function App() {
           </button>
         </form>
 
-        {loading • (
+        {loading ? (
           <div className="loading-container">
             <div className="spinner"></div>
             <p className="loading-text">Fetching tasks from H2 Database...</p>
           </div>
         ) : (
           <div className="task-list">
-            {tasks.length === 0 • (
+            {tasks.length === 0 ? (
               <div className="empty-state">
                 <div className="empty-icon">&#10024;</div>
                 <p className="empty-text">No tasks on this page. You're all caught up!</p>
               </div>
             ) : (
               tasks.map((task) => (
-                <div key={task.id} className={`task-item ${task.completed • 'completed' : ''}`}>
+                <div key={task.id} className={`task-item ${task.completed ? 'completed' : ''}`}>
                   <div className="task-content" onClick={() => handleToggleTask(task.id)}>
-                    <div className={`checkbox-wrapper ${task.completed • 'checked' : ''}`}>
+                    <div className={`checkbox-wrapper ${task.completed ? 'checked' : ''}`}>
                       <div className="checkbox-inner">
                         {task.completed && (
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
@@ -208,6 +208,3 @@ function App() {
 }
 
 export default App;
-
-
-
